@@ -21,9 +21,6 @@ public class Settlement {
     @Column(name = "SETTLEMENT_ID")
     private Long id;
 
-    @Column(name = "SETTLEMENT_TYPE")
-    private String settementType;
-
     @Column(name = "DOCUMENT")
     private String document;
 
@@ -43,12 +40,6 @@ public class Settlement {
     @Column(name = "AMOUNT")
     private BigDecimal amount;
 
-    @Column(name = "VAT")
-    private BigDecimal vat;
-
-    @Column(name = "SPLIT_PAYMENT", nullable = false)
-    private Boolean isSplitPayment;
-
     @OneToMany(
             targetEntity = Payment.class,
             mappedBy = "settlement",
@@ -58,22 +49,7 @@ public class Settlement {
     @Builder.Default
     private List<Payment> payments = new ArrayList<>();
 
-    public BigDecimal getPaymentsAmount() {
-        BigDecimal result = payments.stream()
-                .map(Payment::getAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        return result;
-    }
 
-    public boolean isPaid() {
-        MathContext mc = new MathContext(4);
-        BigDecimal diff = amount.subtract(getPaymentsAmount(), mc);
-        if (diff.compareTo(BigDecimal.ZERO) == 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 
 }

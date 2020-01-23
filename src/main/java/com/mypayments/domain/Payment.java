@@ -18,9 +18,6 @@ public class Payment {
     @Column(name = "PAYMENT_ID")
     private Long id;
 
-    @Column(name = "PAYMENT_TYPE")
-    private String paymentType;
-
     @ManyToOne
     @JoinColumn(name = "CONTRACTOR_ID")
     private Contractor contractor;
@@ -33,12 +30,6 @@ public class Payment {
 
     @Column(name = "CURRENCY")
     private String currency;
-
-    @Column(name = "VAT")
-    private BigDecimal vat;
-
-    @Column(name = "SPLIT_PAYMENT",nullable = false)
-    private Boolean isSplitPayment;
 
     @ManyToOne
     @JoinColumn(name = "SETTLEMENT_ID")

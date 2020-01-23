@@ -12,15 +12,14 @@ import java.util.List;
 @Getter
 @Builder
 public class SettlementDto {
-    private String settlementType;
     private String document;
     private Long contractorId;
     private String dateOfIssue;
     private String dateOfPayment;
     private BigDecimal amount;
     private String currency;
-    private BigDecimal vat;
-    private Boolean isSplitPayment;
     private List<PaymentDto> paymentDtoList;
+    private Boolean isPaid;
+    private BigDecimal paidAmount;
 
 }
