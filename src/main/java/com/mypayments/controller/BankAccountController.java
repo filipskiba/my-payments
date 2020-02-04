@@ -21,10 +21,6 @@ public class BankAccountController {
     @Autowired
     private BankAccountMapper bankAccountMapper;
 
-   /* @RequestMapping(method = RequestMethod.GET, value = "/bankAccounts/{bankAccountId}")
-    public BankAccountDto getBankAccount(@PathVariable("bankAccountId") Long bankAccountId) throws BankAccountNotFoundException {
-        return bankAccountMapper.mapToBankAccountDto(bankAccountService.getBankAccountById(bankAccountId));
-    }*/
 
     @RequestMapping(method = RequestMethod.GET, value = "/bankAccounts/{contractorId}")
     public List<BankAccountDto> getContractorBankAccounts(@PathVariable("contractorId") Long contractorId) throws ContractorNotFoundException {

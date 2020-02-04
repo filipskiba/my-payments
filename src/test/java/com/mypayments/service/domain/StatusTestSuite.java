@@ -59,7 +59,9 @@ public class StatusTestSuite {
     public void testFindAllStatuses() {
         //Given
         Status status1 = new Status();
+        status1.setIsContractorOnWL(false);
         Status status2 = new Status();
+        status2.setIsContractorOnWL(false);
         statusRepository.save(status1);
         statusRepository.save(status2);
 
@@ -81,7 +83,9 @@ public class StatusTestSuite {
         //Given
         Contractor contractor = new Contractor();
         Status status1 = new Status();
+        status1.setIsContractorOnWL(false);
         Status status2 = new Status();
+        status2.setIsContractorOnWL(false);
         status1.setContractor(contractor);
         status2.setContractor(contractor);
         contractor.getStatuses().add(status1);
