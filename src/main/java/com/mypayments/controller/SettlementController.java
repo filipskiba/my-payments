@@ -21,7 +21,7 @@ public class SettlementController {
     private SettlementMapper settlementMapper;
 
     @RequestMapping(method = RequestMethod.GET, value = "/settlements/{settlementId}")
-    public SettlementDto getSettlement(@PathVariable("settlementId") Long settlementId) throws SettlementNotFoundException {
+    public SettlementDto getSettlement(@PathVariable("settlementId") Long settlementId) throws SettlementNotFoundException, ContractorNotFoundException {
         return settlementMapper.mapToSettlementDto(settlementService.getSettlementById(settlementId));
     }
 

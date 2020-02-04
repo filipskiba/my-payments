@@ -1,6 +1,8 @@
 package com.mypayments.domain;
 
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,24 +23,23 @@ public class Contractor {
     private String contractorName;
     @Column(name="NIP_ID")
     private String nipId;
-    @Column(name="REGON_ID")
-    private String regonId;
-    @Column(name="PESEL_ID")
-    private String peselId;
+
 
     @OneToMany(
+            orphanRemoval = true,
             targetEntity = BankAccount.class,
             mappedBy = "contractor",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+            fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
     @Builder.Default
     private List<BankAccount> bankAccounts = new ArrayList<>();
 
     @OneToMany(
             targetEntity = Status.class,
             mappedBy = "contractor",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
     @Builder.Default
     private List<Status> statuses = new ArrayList<>();
 
@@ -53,7 +54,7 @@ public class Contractor {
     @OneToMany(
             targetEntity = Settlement.class,
             mappedBy = "contractor",
-            cascade = CascadeType.ALL,
+            orphanRemoval = true,
             fetch = FetchType.LAZY)
     @Builder.Default
     private List<Settlement> settlements = new ArrayList<>();

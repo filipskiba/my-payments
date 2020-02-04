@@ -1,9 +1,6 @@
 package com.mypayments.domain.Dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -11,20 +8,13 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Builder
+@ToString
 public class ContractorDto {
+    private Long contractorId;
     private String contractorName;
     private String nipId;
-    private String regonId;
-    private String peselId;
     private List<BankAccountDto> bankAccountDtos;
     private List<SettlementDto> settlementDtos;
     private List<PaymentDto> paymentDtos;
     private List<StatusDto> statusDtos;
-
-    public ContractorDto(String contractorName, String nipId, String regonId, String peselId) {
-        this.contractorName = contractorName;
-        this.nipId = nipId;
-        this.regonId = regonId;
-        this.peselId = peselId;
-    }
 }

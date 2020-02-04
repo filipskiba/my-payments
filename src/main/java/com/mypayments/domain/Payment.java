@@ -28,9 +28,6 @@ public class Payment {
     @Column(name = "AMOUNT")
     private BigDecimal amount;
 
-    @Column(name = "CURRENCY")
-    private String currency;
-
     @ManyToOne
     @JoinColumn(name = "SETTLEMENT_ID")
     private Settlement settlement;

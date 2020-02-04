@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -12,12 +13,13 @@ import java.util.List;
 @Getter
 @Builder
 public class SettlementDto {
+    private Long settlementId;
     private String document;
     private Long contractorId;
-    private String dateOfIssue;
-    private String dateOfPayment;
+    private String contractorName;
+    private LocalDate dateOfIssue;
+    private LocalDate dateOfPayment;
     private BigDecimal amount;
-    private String currency;
     private List<PaymentDto> paymentDtoList;
     private Boolean isPaid;
     private BigDecimal paidAmount;

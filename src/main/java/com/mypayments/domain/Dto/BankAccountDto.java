@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 public class BankAccountDto {
+    private Long bankAccountId;
     private Long contractorId;
     private String bankAccountNumber;
 }

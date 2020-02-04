@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +32,6 @@ public class Settlement {
 
     @Column(name = "DATE_OF_PAYMENT")
     private LocalDate dateOfPayment;
-
-    @Column(name = "CURRENCY")
-    private String currency;
 
     @Column(name = "AMOUNT")
     private BigDecimal amount;

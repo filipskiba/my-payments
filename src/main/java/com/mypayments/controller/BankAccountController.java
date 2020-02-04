@@ -1,6 +1,5 @@
 package com.mypayments.controller;
 
-import com.mypayments.domain.BankAccount;
 import com.mypayments.domain.Dto.BankAccountDto;
 import com.mypayments.exception.BankAccountNotFoundException;
 import com.mypayments.exception.ContractorNotFoundException;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
@@ -21,14 +21,14 @@ public class BankAccountController {
     @Autowired
     private BankAccountMapper bankAccountMapper;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/bankAccounts/{bankAccountId}")
+   /* @RequestMapping(method = RequestMethod.GET, value = "/bankAccounts/{bankAccountId}")
     public BankAccountDto getBankAccount(@PathVariable("bankAccountId") Long bankAccountId) throws BankAccountNotFoundException {
         return bankAccountMapper.mapToBankAccountDto(bankAccountService.getBankAccountById(bankAccountId));
-    }
+    }*/
 
-    @RequestMapping(method = RequestMethod.GET, value = "/bankAccounts")
-    public List<BankAccountDto> getContractorBankAccounts() {
-        return bankAccountMapper.mapToBankAccountsDtoList(bankAccountService.getAllBankAccounts());
+    @RequestMapping(method = RequestMethod.GET, value = "/bankAccounts/{contractorId}")
+    public List<BankAccountDto> getContractorBankAccounts(@PathVariable("contractorId") Long contractorId) throws ContractorNotFoundException {
+        return bankAccountMapper.mapToBankAccountsDtoList(bankAccountService.getContractorBankAccounts(contractorId));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/bankAccounts")

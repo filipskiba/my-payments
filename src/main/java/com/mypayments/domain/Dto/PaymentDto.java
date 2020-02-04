@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 
 @AllArgsConstructor
@@ -13,13 +14,11 @@ import java.math.BigDecimal;
 @Getter
 @Builder
 public class PaymentDto {
-    private String paymentType;
+    private Long paymentId;
     private Long contractorId;
-    private String dateOfTransfer;
+    private String contractorName;
+    private LocalDate dateOfTransfer;
     private BigDecimal amount;
-    private String currency;
-    private BigDecimal vat;
-    private Boolean isSplitPayment;
     private Long settlementId;
     
 }

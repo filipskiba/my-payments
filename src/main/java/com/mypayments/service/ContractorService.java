@@ -1,14 +1,21 @@
 package com.mypayments.service;
 
 import com.mypayments.domain.Contractor;
+import com.mypayments.domain.Dto.StatusDto;
+import com.mypayments.domain.Status;
 import com.mypayments.exception.ContractorNotFoundException;
+import com.mypayments.exception.EmptyDataException;
+import com.mypayments.exception.InvalidDataFormatException;
+import com.mypayments.gov.GovFacade;
 import com.mypayments.repository.ContractorRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ContractorService {
@@ -16,6 +23,10 @@ public class ContractorService {
 
     @Autowired
     ContractorRepository contractorRepository;
+
+    @Autowired
+    GovFacade govFacade;
+
 
     public List<Contractor> getAllContractors() {
         return contractorRepository.findAll();
@@ -48,6 +59,23 @@ public class ContractorService {
         if(contractorRepository.findById(contractorId).isPresent()){
             contractorRepository.deleteById(contractorId);
             LOGGER.info("Successfully deleted contractor with ID: "+contractorId);
+        }
+        else {
+            LOGGER.error("Can not find contractor with ID: "+contractorId);
+            throw new ContractorNotFoundException();
+        }
+    }
+
+    public Boolean checkStatus( final Long contractorId) throws InvalidDataFormatException, EmptyDataException, ContractorNotFoundException {
+        if(contractorRepository.findById(contractorId).isPresent()){
+            Contractor contractor = contractorRepository.findById(contractorId).get();
+            Status status = govFacade.createStatus(contractor);
+            if(status.getIsContractorOnWL()){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
         else {
             LOGGER.error("Can not find contractor with ID: "+contractorId);

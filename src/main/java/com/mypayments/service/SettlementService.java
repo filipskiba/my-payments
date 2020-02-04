@@ -1,6 +1,5 @@
 package com.mypayments.service;
 
-import com.mypayments.domain.Dto.SettlementDto;
 import com.mypayments.domain.Payment;
 import com.mypayments.domain.Settlement;
 import com.mypayments.exception.SettlementNotFoundException;
@@ -10,12 +9,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class SettlementService {
     private static final Logger LOGGER = LoggerFactory.getLogger(SettlementService.class);
     private static final String MESSAGE = "Can not find settlement with ID: ";

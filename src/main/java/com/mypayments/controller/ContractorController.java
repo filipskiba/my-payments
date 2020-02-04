@@ -2,6 +2,8 @@ package com.mypayments.controller;
 
 import com.mypayments.domain.Dto.ContractorDto;
 import com.mypayments.exception.ContractorNotFoundException;
+import com.mypayments.exception.EmptyDataException;
+import com.mypayments.exception.InvalidDataFormatException;
 import com.mypayments.exception.SettlementNotFoundException;
 import com.mypayments.mapper.ContractorMapper;
 import com.mypayments.service.ContractorService;
@@ -9,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api")
 public class ContractorController {
@@ -32,6 +36,7 @@ public class ContractorController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/contractors")
     public void createContractor(@RequestBody ContractorDto contractorDto) throws SettlementNotFoundException, ContractorNotFoundException {
+        System.out.println(contractorDto);
         contractorService.saveContractor(contractorMapper.mapToContractor(contractorDto));
     }
 
@@ -43,6 +48,10 @@ public class ContractorController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/contractors/{contractorId}")
     public void deleteContractor(@PathVariable("contractorId") Long contractorId) throws ContractorNotFoundException {
         contractorService.deleteContractorById(contractorId);
+    }
+    @RequestMapping(method = RequestMethod.GET, value = "/contractors/status/{contractorId}")
+    public Boolean getContractorStatus(@PathVariable("contractorId") Long contractorId) throws InvalidDataFormatException, EmptyDataException, ContractorNotFoundException {
+       return contractorService.checkStatus(contractorId);
     }
 
 }

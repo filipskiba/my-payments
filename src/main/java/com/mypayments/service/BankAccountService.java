@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class BankAccountService {
@@ -22,9 +24,10 @@ public class BankAccountService {
     @Autowired
     ContractorRepository contractorRepository;
 
+
     public List<BankAccount> getContractorBankAccounts(final Long contractorId) throws ContractorNotFoundException {
         if (contractorRepository.findById(contractorId).isPresent()) {
-            return contractorRepository.findById(contractorId).get().getBankAccounts();
+            return bankAccountRepository.findBankAccountByContractor_Id(contractorId);
         } else {
             LOGGER.error("Can not find contractor with ID" + contractorId);
             throw new ContractorNotFoundException();

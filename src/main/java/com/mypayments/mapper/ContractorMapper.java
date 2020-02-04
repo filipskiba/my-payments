@@ -7,6 +7,7 @@ import com.mypayments.exception.SettlementNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -27,10 +28,9 @@ public class ContractorMapper {
 
     public Contractor mapToContractor(final ContractorDto contractorDto) throws ContractorNotFoundException, SettlementNotFoundException {
         return new Contractor().builder()
+                .id(contractorDto.getContractorId())
                 .contractorName(contractorDto.getContractorName())
                 .nipId(contractorDto.getNipId())
-                .peselId(contractorDto.getPeselId())
-                .regonId(contractorDto.getRegonId())
                 .bankAccounts(bankAccountMapper.mapToBankAccountsList(contractorDto.getBankAccountDtos()))
                 .payments(paymentMapper.mapToPaymentsList(contractorDto.getPaymentDtos()))
                 .settlements(settlementMapper.mapToSettlementsList(contractorDto.getSettlementDtos()))
@@ -38,10 +38,9 @@ public class ContractorMapper {
     }
     public ContractorDto mapToContractorDto(final Contractor contractor) {
         return new ContractorDto().builder()
+                .contractorId(contractor.getId())
                 .contractorName(contractor.getContractorName())
                 .nipId(contractor.getNipId())
-                .peselId(contractor.getPeselId())
-                .regonId(contractor.getRegonId())
                 .bankAccountDtos(bankAccountMapper.mapToBankAccountsDtoList(contractor.getBankAccounts()))
                 .paymentDtos(paymentMapper.mapToPaymentsDtoList(contractor.getPayments()))
                 .settlementDtos(settlementMapper.mapToSettlementDtoList(contractor.getSettlements()))
@@ -50,10 +49,9 @@ public class ContractorMapper {
     public List<ContractorDto> mapToContractorsDtoList(final List<Contractor> contractors){
         return contractors.stream()
                 .map(c-> new ContractorDto().builder()
+                .contractorId(c.getId())
                 .contractorName(c.getContractorName())
                 .nipId(c.getNipId())
-                .peselId(c.getPeselId())
-                .regonId(c.getRegonId())
                 .bankAccountDtos(bankAccountMapper.mapToBankAccountsDtoList(c.getBankAccounts()))
                 .paymentDtos(paymentMapper.mapToPaymentsDtoList(c.getPayments()))
                 .settlementDtos(settlementMapper.mapToSettlementDtoList(c.getSettlements()))

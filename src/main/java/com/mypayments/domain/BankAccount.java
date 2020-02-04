@@ -17,7 +17,7 @@ public class BankAccount {
     @Column(name = "BANK_ACCOUNT")
     private String accountNumber;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name="CONTRACTOR_ID")
     private Contractor contractor;
 }

@@ -12,17 +12,17 @@ import java.time.LocalDate;
 @Builder
 @Setter
 @Entity
+@ToString
+@EqualsAndHashCode
 public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name="CONTRACTOR_ID")
     private Contractor contractor;
     @Column(name = "IS_CONTRACTOR_ON_WL",nullable = false)
     private Boolean isContractorOnWL;
-    @Column(name = "IS_BANK_ACCOUNT_ON_WL", nullable = false)
-    private Boolean isBankAccountOnWL;
     @Column(name = "STATUS_DATE")
     private LocalDate statusDate;
 }
