@@ -2,7 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.2.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'java'
-    id 'war'
+  //  id 'war'
 }
 
 group = 'com.payments'
@@ -25,9 +25,10 @@ dependencies {
     compile('com.google.code.gson:gson:2.8.2')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.10.1'
-    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+//    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     //compile('mysql:mysql-connector-java')
-    compile("com.h2database:h2")
+   // compile("com.h2database:h2")
+    compile("org.postgresql:postgresql:42.2.2")
     compile('io.springfox:springfox-swagger2:2.7.0')
     compile('io.springfox:springfox-swagger-ui:2.7.0')
     annotationProcessor 'org.projectlombok:lombok'
