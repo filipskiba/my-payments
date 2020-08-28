@@ -6,7 +6,6 @@ import com.mypayments.domain.Disposition;
 import com.mypayments.domain.DispositionFileLine;
 import com.mypayments.exception.InvalidDataFormatException;
 import com.mypayments.validators.BankAccountValidator;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
