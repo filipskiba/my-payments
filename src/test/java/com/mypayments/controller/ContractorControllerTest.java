@@ -20,7 +20,9 @@ import java.util.ArrayList;
 
 import com.google.gson.Gson;
 import org.springframework.http.MediaType;
+
 import java.util.List;
+
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -45,13 +47,13 @@ class ContractorControllerTest {
     @Test
     void shouldGetContractorById() throws Exception {
         //Given
-        Contractor contractor = new Contractor(1L, "testName", "5555555555", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Contractor contractor = new Contractor().builder().id(1L).contractorName("testName").nipId("5555555555").build();
         contractorRepository.save(contractor);
-        ContractorDto contractorDto = new ContractorDto(1L, "testName", "5555555555", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        ContractorDto contractorDto = new ContractorDto().builder().contractorId(1L).contractorName("testName").nipId("5555555555").build();
         when(contractorController.getContractor(1L)).thenReturn(contractorDto);
         //When & Then
-        mockMvc.perform(get("/api/contractors/"+contractor.getId()).contentType(MediaType.APPLICATION_JSON)
-                .param("contractorId","1"))
+        mockMvc.perform(get("/api/contractors/" + contractor.getId()).contentType(MediaType.APPLICATION_JSON)
+                .param("contractorId", "1"))
                 .andDo(print())
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("contractorId").value("1"))
@@ -74,7 +76,7 @@ class ContractorControllerTest {
     @Test
     void createContractor() throws Exception {
         //Given
-        ContractorDto contractorDto = new ContractorDto(1L, "testName", "5555555555", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        ContractorDto contractorDto = new ContractorDto().builder().contractorId(1L).contractorName("testName").nipId("5555555555").build();
         Gson gson = new Gson();
         String param = gson.toJson(contractorDto);
         //When & Then
@@ -87,11 +89,9 @@ class ContractorControllerTest {
     @Test
     void shouldUpdateContractor() throws Exception {
         //Given
-        Contractor contractor = new Contractor(1L, "testName", "5555555555",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Contractor contractor = new Contractor().builder().id(1L).contractorName("testName").nipId("5555555555").build();
         contractorRepository.save(contractor);
-        ContractorDto contractorDto = new ContractorDto(1L, "updatedName", "5555555555",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        ContractorDto contractorDto = new ContractorDto().builder().contractorId(1L).contractorName("updatedName").nipId("5555555555").build();
         Gson gson = new Gson();
         String param = gson.toJson(contractorDto);
         when(contractorController.updateContractor(any())).thenReturn(contractorDto);
@@ -108,8 +108,7 @@ class ContractorControllerTest {
     @Test
     void deleteContractor() throws Exception {
         //Given
-        Contractor contractor = new Contractor(1L, "testName", "5555555555",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Contractor contractor = new Contractor().builder().id(1L).contractorName("testName").nipId("5555555555").build();
         contractorRepository.save(contractor);
         //When & Then
         mockMvc.perform(delete("/api/contractors/" + contractor.getId()).contentType(MediaType.APPLICATION_JSON)

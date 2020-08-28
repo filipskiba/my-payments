@@ -1,7 +1,6 @@
 package com.mypayments.controller;
 
 import com.mypayments.domain.Dto.StatusDto;
-import com.mypayments.domain.Status;
 import com.mypayments.exception.ContractorNotFoundException;
 import com.mypayments.exception.EmptyDataException;
 import com.mypayments.exception.InvalidDataFormatException;
@@ -34,7 +33,7 @@ public class StatusController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/statuses/{contractorId}")
-    public StatusDto createStatusForContractor(@PathVariable Long contractorId) throws ContractorNotFoundException, InvalidDataFormatException, EmptyDataException {
+    public StatusDto createStatusForContractor(@PathVariable("contractorId") Long contractorId) throws ContractorNotFoundException, InvalidDataFormatException, EmptyDataException {
        return statusMapper.mapToStatusDto(statusService.createStatusForContractor(contractorId));
     }
     @RequestMapping(method = RequestMethod.GET, value = "/statuses/all")

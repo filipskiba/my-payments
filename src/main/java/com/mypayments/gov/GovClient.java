@@ -13,6 +13,7 @@ import java.time.LocalDate;
 
 @Component
 public class GovClient {
+
     private final String GOV_API_ENDPOINT = "https://wl-api.mf.gov.pl/api";
 
     @Autowired

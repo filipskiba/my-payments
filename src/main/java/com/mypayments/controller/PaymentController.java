@@ -1,17 +1,14 @@
 package com.mypayments.controller;
 
-import com.mypayments.domain.Dto.BankAccountDto;
 import com.mypayments.domain.Dto.PaymentDto;
-import com.mypayments.exception.BankAccountNotFoundException;
-import com.mypayments.exception.ContractorNotFoundException;
-import com.mypayments.exception.PaymentNotFoundException;
-import com.mypayments.exception.SettlementNotFoundException;
+import com.mypayments.exception.*;
 import com.mypayments.mapper.PaymentMapper;
 import com.mypayments.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api")
@@ -34,12 +31,12 @@ public class PaymentController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/payments")
-    public void createPayment(@RequestBody PaymentDto paymentDto) throws SettlementNotFoundException, ContractorNotFoundException {
+    public void createPayment(@RequestBody PaymentDto paymentDto) throws SettlementNotFoundException, ContractorNotFoundException, DispositionNotFoundException, BankAccountNotFoundException {
         paymentService.savePayment(paymentMapper.mapToPayment(paymentDto));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/payments")
-    public PaymentDto updatePayment(@RequestBody PaymentDto paymentDto) throws ContractorNotFoundException, SettlementNotFoundException, PaymentNotFoundException {
+    public PaymentDto updatePayment(@RequestBody PaymentDto paymentDto) throws ContractorNotFoundException, SettlementNotFoundException, PaymentNotFoundException, DispositionNotFoundException, BankAccountNotFoundException {
         return paymentMapper.mapToPaymentDto(paymentService.updatePayment(paymentMapper.mapToPayment(paymentDto)));
     }
 

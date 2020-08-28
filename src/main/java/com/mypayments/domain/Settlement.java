@@ -24,8 +24,20 @@ public class Settlement {
     private String document;
 
     @ManyToOne
+    @JoinColumn(name = "OWNER_ID")
+    private Contractor owner;
+
+    @ManyToOne
+    @JoinColumn(name = "OWNER_BANKACCOUNT_ID")
+    private BankAccount ownerBankAccount;
+
+    @ManyToOne
     @JoinColumn(name = "CONTRACTOR_ID")
     private Contractor contractor;
+
+    @ManyToOne
+    @JoinColumn(name = "BANKACCOUNT_ID")
+    private BankAccount bankAccount;
 
     @Column(name = "DATE_OF_ISSUE")
     private LocalDate dateOfIssue;
@@ -44,8 +56,4 @@ public class Settlement {
     )
     @Builder.Default
     private List<Payment> payments = new ArrayList<>();
-
-
-
-
 }

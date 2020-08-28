@@ -10,9 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class BankAccountService {
@@ -34,7 +32,7 @@ public class BankAccountService {
         }
     }
 
-    public List<BankAccount> getAllBankAccounts(){
+    public List<BankAccount> getAllBankAccounts() {
         return bankAccountRepository.findAll();
     }
 
@@ -54,21 +52,19 @@ public class BankAccountService {
     }
 
     public BankAccount updateBankAccount(BankAccount bankAccount) throws BankAccountNotFoundException {
-        if(bankAccountRepository.findById(bankAccount.getId()).isPresent()){
+        if (bankAccountRepository.findById(bankAccount.getId()).isPresent()) {
             return bankAccountRepository.save(bankAccount);
-        }
-        else {
-            LOGGER.error("Can not find bank account with ID: "+bankAccount.getId());
+        } else {
+            LOGGER.error("Can not find bank account with ID: " + bankAccount.getId());
             throw new BankAccountNotFoundException();
         }
     }
 
     public void deleteBankAccountById(final Long bankAccountId) throws BankAccountNotFoundException {
-        if(bankAccountRepository.findById(bankAccountId).isPresent()){
+        if (bankAccountRepository.findById(bankAccountId).isPresent()) {
             bankAccountRepository.deleteById(bankAccountId);
-            LOGGER.info("Successfully deleted bank account with ID: "+ bankAccountId);
-        }
-        else {
+            LOGGER.info("Successfully deleted bank account with ID: " + bankAccountId);
+        } else {
             LOGGER.error("Can not find bank account with ID: " + bankAccountId);
             throw new BankAccountNotFoundException();
         }

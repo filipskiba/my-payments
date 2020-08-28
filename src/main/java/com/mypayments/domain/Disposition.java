@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @Entity
 @Builder
-public class Dispositions {
+public class Disposition {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "DISPOSITION_ID")
@@ -24,13 +24,21 @@ public class Dispositions {
     private LocalDate dateOfExecution;
 
     @Column
-    private boolean isExecuted;
+    private Boolean isExecuted;
 
     @Column
     private String title;
 
     @Column
     private BigDecimal amount;
+
+    @ManyToOne
+    @JoinColumn(name = "OWNER_ID")
+    private Contractor owner;
+
+    @ManyToOne
+    @JoinColumn(name = "OWNER_BANKACCOUNT_ID")
+    private BankAccount ownerBankAccount;
 
     @ManyToOne
     @JoinColumn(name = "CONTRACTOR_ID")

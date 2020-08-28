@@ -1,7 +1,9 @@
 package com.mypayments.controller;
 
 import com.mypayments.domain.Dto.SettlementDto;
+import com.mypayments.exception.BankAccountNotFoundException;
 import com.mypayments.exception.ContractorNotFoundException;
+import com.mypayments.exception.DispositionNotFoundException;
 import com.mypayments.exception.SettlementNotFoundException;
 import com.mypayments.mapper.SettlementMapper;
 import com.mypayments.service.SettlementService;
@@ -31,12 +33,12 @@ public class SettlementController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/settlements")
-    public void createSettlement(@RequestBody SettlementDto settlementDto) throws ContractorNotFoundException, SettlementNotFoundException {
+    public void createSettlement(@RequestBody SettlementDto settlementDto) throws ContractorNotFoundException, SettlementNotFoundException, DispositionNotFoundException, BankAccountNotFoundException {
         settlementService.saveSettlement(settlementMapper.mapToSettlement(settlementDto));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/settlements")
-    public SettlementDto updateSettlement(@RequestBody SettlementDto settlementDto) throws ContractorNotFoundException, SettlementNotFoundException {
+    public SettlementDto updateSettlement(@RequestBody SettlementDto settlementDto) throws ContractorNotFoundException, SettlementNotFoundException, DispositionNotFoundException, BankAccountNotFoundException {
         return settlementMapper.mapToSettlementDto(settlementService.updateSettlement(settlementMapper.mapToSettlement(settlementDto)));
     }
 

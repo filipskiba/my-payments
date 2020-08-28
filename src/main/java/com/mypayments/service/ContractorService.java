@@ -1,7 +1,6 @@
 package com.mypayments.service;
 
 import com.mypayments.domain.Contractor;
-import com.mypayments.domain.Dto.StatusDto;
 import com.mypayments.domain.Status;
 import com.mypayments.exception.ContractorNotFoundException;
 import com.mypayments.exception.EmptyDataException;
@@ -13,9 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class ContractorService {
@@ -31,6 +28,9 @@ public class ContractorService {
     public List<Contractor> getAllContractors() {
         return contractorRepository.findAll();
     }
+    public List<Contractor> getAllOwners() {
+        return contractorRepository.findContractorByContractorTypeContractorTypeName("właściciel");
+    }
 
     public Contractor getContractorById(final Long contractorId) throws ContractorNotFoundException {
         if(contractorRepository.findById(contractorId).isPresent()){
@@ -41,6 +41,7 @@ public class ContractorService {
             throw new ContractorNotFoundException();
         }
     }
+
     public Contractor saveContractor(final Contractor contractor){
         LOGGER.info("Successfully saved contractor");
         return contractorRepository.save(contractor);

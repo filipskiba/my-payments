@@ -1,6 +1,5 @@
 package com.mypayments.repository;
 
-import com.mypayments.domain.Contractor;
 import com.mypayments.domain.Payment;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

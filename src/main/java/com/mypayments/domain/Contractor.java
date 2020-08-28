@@ -23,6 +23,15 @@ public class Contractor {
     private String contractorName;
     @Column(name="NIP_ID")
     private String nipId;
+    @Column(name = "ADRESS")
+    private String adress;
+    @Column(name = "CITY")
+    private String city;
+    @Column(name = "ZIP_CODE")
+    private String zipCode;
+    @ManyToOne
+    @JoinColumn(name = "CONTRACTORTYPE_ID")
+    private ContractorType contractorType;
 
 
     @OneToMany(
@@ -58,6 +67,38 @@ public class Contractor {
             fetch = FetchType.LAZY)
     @Builder.Default
     private List<Settlement> settlements = new ArrayList<>();
+
+    @OneToMany(
+            targetEntity = Settlement.class,
+            mappedBy = "owner",
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Settlement> settlementsByOwner = new ArrayList<>();
+
+    @OneToMany(
+            targetEntity = Payment.class,
+            mappedBy = "owner",
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Payment> ownerPayments = new ArrayList<>();
+
+    @OneToMany(
+            targetEntity = Disposition.class,
+            mappedBy = "contractor",
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Disposition> dispositions = new ArrayList<>();
+
+    @OneToMany(
+            targetEntity = Disposition.class,
+            mappedBy = "owner",
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Disposition> ownerDispositions = new ArrayList<>();
 
 
 

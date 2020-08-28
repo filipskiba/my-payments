@@ -2,11 +2,8 @@ package com.mypayments.controller;
 
 import com.google.gson.Gson;
 import com.mypayments.domain.Contractor;
-import com.mypayments.domain.Dto.ContractorDto;
 import com.mypayments.domain.Dto.SettlementDto;
-import com.mypayments.domain.Payment;
 import com.mypayments.domain.Settlement;
-import com.mypayments.repository.ContractorRepository;
 import com.mypayments.repository.SettlementsRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +23,6 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,14 +40,17 @@ class SettlementControllerTest {
     @MockBean
     private SettlementsRepository settlementsRepository;
 
+    private Contractor contractor = new Contractor();
+    private LocalDate date = LocalDate.parse("2020-01-01");
+    private Settlement exampleSettlement = new Settlement().builder().id(1L).document("testDoc").contractor(contractor).dateOfIssue(date).dateOfPayment(date).amount(new BigDecimal("1")).build();
+    private SettlementDto exampleSettlementDto = new SettlementDto().builder().settlementId(1L).document("testDoc").contractorId(contractor.getId()).dateOfIssue(date.toString()).dateOfPayment(date.toString()).amount(new BigDecimal("1")).isPaid(false).paidAmount(new BigDecimal("1")).build();
+
     @Test
     void shouldGetSettlementById() throws Exception {
         //Given
-        Contractor contractor = new Contractor();
-
-        Settlement settlement = new Settlement(1L, "testDoc", contractor, LocalDate.now(), LocalDate.now(), new BigDecimal("1"), new ArrayList<>());
+        Settlement settlement = exampleSettlement;
         settlementsRepository.save(settlement);
-        SettlementDto settlementDto = new SettlementDto(1L, "testDoc", contractor.getId(), contractor.getContractorName(), LocalDate.now(), LocalDate.now(), new BigDecimal("1"), new ArrayList<>(), false, new BigDecimal("1"));
+        SettlementDto settlementDto = exampleSettlementDto;
         when(settlementController.getSettlement(1L)).thenReturn(settlementDto);
         //When & Then
         mockMvc.perform(get("/api/settlements/" + settlement.getId()).contentType(MediaType.APPLICATION_JSON)
@@ -62,10 +61,9 @@ class SettlementControllerTest {
                 .andExpect(jsonPath("document").value("testDoc"))
                 .andExpect(jsonPath("contractorId").value(contractor.getId()))
                 .andExpect(jsonPath("contractorName").value(contractor.getContractorName()))
-                .andExpect(jsonPath("dateOfIssue").value(LocalDate.now().toString()))
-                .andExpect(jsonPath("dateOfPayment").value(LocalDate.now().toString()))
+                .andExpect(jsonPath("dateOfIssue").value(date.toString()))
+                .andExpect(jsonPath("dateOfPayment").value(date.toString()))
                 .andExpect(jsonPath("amount").value(new BigDecimal("1")))
-                .andExpect(jsonPath("paymentDtoList").value(new ArrayList<>()))
                 .andExpect(jsonPath("isPaid").value(false))
                 .andExpect(jsonPath("paidAmount").value(new BigDecimal("1")));
     }
@@ -82,11 +80,10 @@ class SettlementControllerTest {
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
-/*    @Test
+    @Test
     void createSettlement() throws Exception {
         //Given
-        Contractor contractor = new Contractor();
-        SettlementDto settlementDto = new SettlementDto(1L, "testDoc", contractor.getId(), contractor.getContractorName(), LocalDate.now(), LocalDate.now(), new BigDecimal("1"), new ArrayList<>(), false, new BigDecimal("1"));
+        SettlementDto settlementDto =exampleSettlementDto;
         Gson gson = new Gson();
         String param = gson.toJson(settlementDto);
         //When & Then
@@ -99,10 +96,9 @@ class SettlementControllerTest {
     @Test
     void shouldUpdateSettlement() throws Exception {
         //Given
-        Contractor contractor = new Contractor();
-        Settlement settlement = new Settlement(1L, "testDoc", contractor, LocalDate.now(), LocalDate.now(), new BigDecimal("1"), new ArrayList<>());
+        Settlement settlement = exampleSettlement;
         settlementsRepository.save(settlement);
-        SettlementDto settlementDto = new SettlementDto(1L, "testDocument", contractor.getId(), contractor.getContractorName(), LocalDate.now(), LocalDate.now(), new BigDecimal("1"), new ArrayList<>(), false, new BigDecimal("1"));
+        SettlementDto settlementDto = exampleSettlementDto;
         Gson gson = new Gson();
         String param = gson.toJson(settlementDto);
         when(settlementController.updateSettlement(any())).thenReturn(settlementDto);
@@ -112,22 +108,22 @@ class SettlementControllerTest {
                 .content(param))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("settlementId").value("1"))
-                .andExpect(jsonPath("document").value("testDocument"))
+                .andExpect(jsonPath("document").value("testDoc"))
                 .andExpect(jsonPath("contractorId").value(contractor.getId()))
                 .andExpect(jsonPath("contractorName").value(contractor.getContractorName()))
-                .andExpect(jsonPath("dateOfIssue").value(LocalDate.now().toString()))
-                .andExpect(jsonPath("dateOfPayment").value(LocalDate.now().toString()))
+                .andExpect(jsonPath("dateOfIssue").value(date.toString()))
+                .andExpect(jsonPath("dateOfPayment").value(date.toString()))
                 .andExpect(jsonPath("amount").value(new BigDecimal("1")))
-                .andExpect(jsonPath("paymentDtoList").value(new ArrayList<>()))
                 .andExpect(jsonPath("isPaid").value(false))
                 .andExpect(jsonPath("paidAmount").value(new BigDecimal("1")));
-    }*/
+    }
 
     @Test
     void deleteSettlement() throws Exception {
         //Given
         Contractor contractor = new Contractor();
-        Settlement settlement = new Settlement(1L, "testDoc", contractor, LocalDate.now(), LocalDate.now(), new BigDecimal("1"), new ArrayList<>());
+        LocalDate date = LocalDate.parse("2020-01-01");
+        Settlement settlement = exampleSettlement;
         settlementsRepository.save(settlement);
         //When & Then
         mockMvc.perform(delete("/api/settlements/" + settlement.getId()).contentType(MediaType.APPLICATION_JSON)

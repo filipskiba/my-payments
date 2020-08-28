@@ -2,14 +2,17 @@ package com.mypayments.mapper;
 
 import com.mypayments.domain.Dto.PaymentDto;
 import com.mypayments.domain.Payment;
+import com.mypayments.exception.BankAccountNotFoundException;
 import com.mypayments.exception.ContractorNotFoundException;
+import com.mypayments.exception.DispositionNotFoundException;
 import com.mypayments.exception.SettlementNotFoundException;
+import com.mypayments.repository.BankAccountRepository;
 import com.mypayments.repository.ContractorRepository;
+import com.mypayments.repository.DispositionRepository;
 import com.mypayments.repository.SettlementsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +27,26 @@ public class PaymentMapper {
     @Autowired
     private SettlementsRepository settlementsRepository;
 
+    @Autowired
+    private DispositionRepository dispositionRepository;
 
-    public Payment mapToPayment(final PaymentDto paymentDto) throws ContractorNotFoundException, SettlementNotFoundException{
+    @Autowired
+    private BankAccountRepository bankAccountRepository;
+
+
+    public Payment mapToPayment(final PaymentDto paymentDto) throws ContractorNotFoundException, SettlementNotFoundException, DispositionNotFoundException, BankAccountNotFoundException {
         return new Payment().builder()
                 .id(paymentDto.getPaymentId())
                 .contractor(contractorRepository.findById(paymentDto.getContractorId()).orElseThrow(ContractorNotFoundException::new))
-                .dateOfTranfer(paymentDto.getDateOfTransfer())
+                .dateOfTranfer(LocalDate.parse(paymentDto.getDateOfTransfer()))
                 .amount(paymentDto.getAmount())
-                .settlement(settlementsRepository.findById(paymentDto.getSettlementId()).orElseThrow(SettlementNotFoundException::new)).build();
+                .document(paymentDto.getDocument())
+                .settlement(settlementsRepository.findById(paymentDto.getSettlementId()).orElseThrow(SettlementNotFoundException::new))
+                .bankAccount(bankAccountRepository.findBankAccountByAccountNumber(paymentDto.getBankAccountNumber()).orElseThrow(BankAccountNotFoundException::new))
+                .owner(contractorRepository.findById(paymentDto.getOwnerId()).orElseThrow(ContractorNotFoundException::new))
+                .ownerBankAccount(bankAccountRepository.findBankAccountByAccountNumber(paymentDto.getOwnerBankAccountNumber()).orElseThrow(BankAccountNotFoundException::new))
+              //  .disposition(dispositionRepository.findById(paymentDto.getDispositionId()).orElseThrow(DispositionNotFoundException::new))
+                .build();
     }
 
     public PaymentDto mapToPaymentDto(final Payment payment) {
@@ -39,27 +54,44 @@ public class PaymentMapper {
                 .paymentId(payment.getId())
                 .contractorId(payment.getContractor().getId())
                 .contractorName(payment.getContractor().getContractorName())
-                .dateOfTransfer(payment.getDateOfTranfer())
+                .dateOfTransfer(payment.getDateOfTranfer().toString())
                 .amount(payment.getAmount())
-                .settlementId(payment.getSettlement().getId()).build();
+                .document(payment.getDocument())
+                .ownerName(payment.getOwner().getContractorName())
+                .settlementId(payment.getSettlement().getId())
+                .dispositionId(payment.getDisposition().getId())
+                .bankAccountNumber(payment.getBankAccount().getAccountNumber())
+                .bankAccountNumber(payment.getBankAccount().getAccountNumber())
+                .ownerBankAccountNumber(payment.getOwnerBankAccount().getAccountNumber())
+                .build();
     }
 
-    public List<Payment> mapToPaymentsList(final List<PaymentDto> paymentsDto) throws ContractorNotFoundException, SettlementNotFoundException {
+    public List<Payment> mapToPaymentsList(final List<PaymentDto> paymentsDto) throws ContractorNotFoundException, SettlementNotFoundException, DispositionNotFoundException {
         if(paymentsDto!=null) {
             List<Payment> payments = new ArrayList<>();
             for (PaymentDto p : paymentsDto) {
-                if (settlementsRepository.findById(p.getSettlementId()).isPresent() && contractorRepository.findById(p.getContractorId()).isPresent()) {
+                if (settlementsRepository.findById(p.getSettlementId()).isPresent() && contractorRepository.findById(p.getContractorId()).isPresent() && dispositionRepository.findById(p.getDispositionId()).isPresent()) {
                     payments.add(new Payment().builder()
                             .id(p.getPaymentId())
                             .contractor(contractorRepository.findById(p.getContractorId()).get())
-                            .dateOfTranfer(p.getDateOfTransfer())
+                            .dateOfTranfer(LocalDate.parse(p.getDateOfTransfer()))
                             .amount(p.getAmount())
-                            .settlement(settlementsRepository.findById(p.getSettlementId()).get()).build()
+                            .document(p.getDocument())
+                            .settlement(settlementsRepository.findById(p.getSettlementId()).get())
+                            .disposition(dispositionRepository.findById(p.getDispositionId()).get())
+                            .bankAccount(bankAccountRepository.findBankAccountByAccountNumber(p.getBankAccountNumber()).get())
+                            .bankAccount(bankAccountRepository.findBankAccountByAccountNumber(p.getBankAccountNumber()).get())
+                            .ownerBankAccount(bankAccountRepository.findBankAccountByAccountNumber(p.getOwnerBankAccountNumber()).get())
+                            .build()
                     );
                 } else {
                     if (!settlementsRepository.findById(p.getSettlementId()).isPresent()) {
                         throw new ContractorNotFoundException();
-                    } else {
+                    }
+                    else if(!dispositionRepository.findById(p.getDispositionId()).isPresent()){
+                        throw new DispositionNotFoundException();
+                    }
+                    else {
                         throw new SettlementNotFoundException();
                     }
                 }
@@ -75,8 +107,16 @@ public class PaymentMapper {
                         .paymentId(p.getId())
                         .contractorId(p.getContractor().getId())
                         .contractorName(p.getContractor().getContractorName())
-                        .dateOfTransfer(p.getDateOfTranfer())
+                        .ownerId(p.getOwner().getId())
+                        .document(p.getDocument())
+                        .ownerBankAccountNumber(p.getOwnerBankAccount().getAccountNumber())
+                        .ownerName(p.getOwner().getContractorName())
+                        .dateOfTransfer(p.getDateOfTranfer().toString())
                         .amount(p.getAmount())
-                        .settlementId(p.getSettlement().getId()).build()).collect(Collectors.toList());
+                        .settlementId(p.getSettlement().getId())
+                        .dispositionId(p.getDisposition().getId())
+                        .bankAccountNumber(p.getBankAccount().getAccountNumber())
+                        .build())
+                        .collect(Collectors.toList());
     }
 }

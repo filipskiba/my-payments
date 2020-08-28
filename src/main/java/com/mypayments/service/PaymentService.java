@@ -1,7 +1,9 @@
 package com.mypayments.service;
 
+import com.mypayments.domain.Disposition;
 import com.mypayments.domain.Payment;
 import com.mypayments.exception.PaymentNotFoundException;
+import com.mypayments.repository.DispositionRepository;
 import com.mypayments.repository.PaymentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +19,10 @@ public class PaymentService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PaymentService.class);
 
     @Autowired
-    PaymentRepository paymentRepository;
+    private PaymentRepository paymentRepository;
+
+    @Autowired
+    private DispositionRepository dispositionRepository;
 
     public List<Payment> getAllPayments() {
         return paymentRepository.findAll();
@@ -34,7 +39,20 @@ public class PaymentService {
     }
 
     public Payment savePayment(final Payment payment) {
-        LOGGER.info("Successfully saved payment");
+        LOGGER.info("Successfully saved payment and disposition");
+        Disposition disposition = new Disposition().builder()
+                .dateOfExecution(payment.getDateOfTranfer())
+                .isExecuted(false)
+                .title(payment.getSettlement().getDocument())
+                .amount(payment.getAmount())
+                .owner(payment.getOwner())
+                .bankAccount(payment.getBankAccount())
+                .title(payment.getDocument())
+                .ownerBankAccount(payment.getOwnerBankAccount())
+                .contractor(payment.getContractor())
+                .build();
+        dispositionRepository.save(disposition);
+        payment.setDisposition(disposition);
         return paymentRepository.save(payment);
     }
 

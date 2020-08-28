@@ -2,10 +2,12 @@ package com.mypayments.controller;
 
 import com.google.gson.Gson;
 import com.mypayments.domain.Contractor;
+import com.mypayments.domain.Disposition;
 import com.mypayments.domain.Dto.PaymentDto;
 import com.mypayments.domain.Payment;
 import com.mypayments.domain.Settlement;
 import com.mypayments.repository.PaymentRepository;
+import com.mypayments.repository.SettlementsRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,20 +38,25 @@ class PaymentControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
+    private SettlementsRepository settlementsRepository;
+
+    @MockBean
     private PaymentController paymentController;
 
     @MockBean
     private PaymentRepository paymentRepository;
 
+    private Contractor contractor = new Contractor();
+    private Settlement settlement = new Settlement();
+    private Disposition disposition = new Disposition();
+    private Payment examplePayment = new Payment().builder().id(1L).contractor(contractor).dateOfTranfer(LocalDate.now()).amount(new BigDecimal("1")).settlement(settlement).disposition(disposition).build();
+    private PaymentDto examplePaymentDto = new PaymentDto().builder().paymentId(1L).contractorId(contractor.getId()).contractorName(contractor.getContractorName()).dateOfTransfer(LocalDate.now().toString()).amount(new BigDecimal("1")).settlementId(settlement.getId()).dispositionId(disposition.getId()).build();
     @Test
     void shouldGetPaymentById() throws Exception {
         //Given
-        Contractor contractor = new Contractor();
-        Settlement settlement = new Settlement();
-        Payment payment = new Payment(1L, contractor, LocalDate.now(), new BigDecimal("1"), settlement);
-        paymentRepository.save(payment);
-        PaymentDto paymentDto = new PaymentDto(1L, contractor.getId(), contractor.getContractorName(), LocalDate.now(),
-                new BigDecimal("1"), settlement.getId());
+        Payment payment = examplePayment;
+        PaymentDto paymentDto = examplePaymentDto;
+
         when(paymentController.getPayment(1L)).thenReturn(paymentDto);
         //When & Then
         mockMvc.perform(get("/api/payments/" + payment.getId()).contentType(MediaType.APPLICATION_JSON)
@@ -90,42 +97,39 @@ class PaymentControllerTest {
                 .andExpect(status().is(200));
     }
 
-   /* @Test
+    @Test
     void shouldUpdatePayment() throws Exception {
         //Given
-        LocalDate currentTime = LocalDate.now();
-        Contractor contractor = new Contractor();
-        Settlement settlement = new Settlement();
-        Payment payment = new Payment(1L, contractor, currentTime, new BigDecimal("1"), settlement);
+        Payment payment = examplePayment;
+        settlementsRepository.save(settlement);
         paymentRepository.save(payment);
         PaymentDto paymentDto = new PaymentDto().builder()
                 .paymentId(1L)
                 .contractorId(contractor.getId())
-                .dateOfTransfer(currentTime)
+                .dateOfTransfer(LocalDate.now().toString())
                 .amount(new BigDecimal("2"))
                 .settlementId(settlement.getId()).build();
         Gson gson = new Gson();
         String param = gson.toJson(paymentDto);
         when(paymentController.updatePayment(any())).thenReturn(paymentDto);
+        System.out.println(payment.toString());
         //When & Then
         mockMvc.perform(put("/api/payments").contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(param))
                 .andExpect(status().is(200))
-                .andExpect(jsonPath("paymentId").value("1"))
-                .andExpect(jsonPath("contractorId").value(contractor.getId()))
-                .andExpect(jsonPath("contractorName").value(contractor.getContractorName()))
-                .andExpect(jsonPath("dateOfTransfer").value(currentTime.toString()))
-                .andExpect(jsonPath("amount").value(new BigDecimal("2")))
-                .andExpect(jsonPath("settlementId").value(settlement.getId()));
-    }*/
+                .andExpect(jsonPath("$.paymentId").value("1"))
+                .andExpect(jsonPath("$.contractorId").value(contractor.getId()))
+                .andExpect(jsonPath("$.contractorName").value(contractor.getContractorName()))
+                .andExpect(jsonPath("$.dateOfTransfer").value(LocalDate.now().toString()))
+                .andExpect(jsonPath("$.amount").value(new BigDecimal("2")))
+                .andExpect(jsonPath("$.settlementId").value(settlement.getId()));
+    }
 
     @Test
     void deleteBankAccount() throws Exception {
         //Given
-        Contractor contractor = new Contractor();
-        Settlement settlement = new Settlement();
-        Payment payment = new Payment(1L, contractor, LocalDate.now(), new BigDecimal("1"), settlement);
+        Payment payment = examplePayment;
         paymentRepository.save(payment);
         //When & Then
         mockMvc.perform(delete("/api/payments/" + payment.getId()).contentType(MediaType.APPLICATION_JSON)

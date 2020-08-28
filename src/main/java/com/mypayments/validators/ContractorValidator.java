@@ -3,10 +3,8 @@ package com.mypayments.validators;
 import com.mypayments.domain.BankAccount;
 import com.mypayments.domain.Contractor;
 import com.mypayments.exception.EmptyDataException;
-
 import com.mypayments.exception.InvalidDataFormatException;
 import com.mypayments.gov.GovClient;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +56,4 @@ public class ContractorValidator {
             return true;
         } else return false;
     }
-
-
 }

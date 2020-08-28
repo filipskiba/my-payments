@@ -1,10 +1,7 @@
 package com.mypayments.controller;
 
 import com.mypayments.domain.Dto.ContractorDto;
-import com.mypayments.exception.ContractorNotFoundException;
-import com.mypayments.exception.EmptyDataException;
-import com.mypayments.exception.InvalidDataFormatException;
-import com.mypayments.exception.SettlementNotFoundException;
+import com.mypayments.exception.*;
 import com.mypayments.mapper.ContractorMapper;
 import com.mypayments.service.ContractorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +30,19 @@ public class ContractorController {
     public List<ContractorDto> getContractors() {
         return contractorMapper.mapToContractorsDtoList(contractorService.getAllContractors());
     }
+    @RequestMapping(method = RequestMethod.GET, value = "/contractors/owners")
+    public List<ContractorDto> getOwners() {
+        return contractorMapper.mapToContractorsDtoList(contractorService.getAllOwners());
+    }
 
     @RequestMapping(method = RequestMethod.POST, value = "/contractors")
-    public void createContractor(@RequestBody ContractorDto contractorDto) throws SettlementNotFoundException, ContractorNotFoundException {
+    public void createContractor(@RequestBody ContractorDto contractorDto) throws SettlementNotFoundException, ContractorNotFoundException, DispositionNotFoundException {
         System.out.println(contractorDto);
         contractorService.saveContractor(contractorMapper.mapToContractor(contractorDto));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/contractors")
-    public ContractorDto updateContractor(@RequestBody ContractorDto contractorDto) throws SettlementNotFoundException, ContractorNotFoundException {
+    public ContractorDto updateContractor(@RequestBody ContractorDto contractorDto) throws SettlementNotFoundException, ContractorNotFoundException, DispositionNotFoundException {
         return contractorMapper.mapToContractorDto(contractorService.updateContractor(contractorMapper.mapToContractor(contractorDto)));
     }
 

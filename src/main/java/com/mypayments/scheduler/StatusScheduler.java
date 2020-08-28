@@ -1,9 +1,6 @@
 package com.mypayments.scheduler;
 
-import com.mypayments.exception.EmptyDataException;
-import com.mypayments.exception.InvalidDataFormatException;
 import com.mypayments.gov.GovFacade;
-import com.mypayments.mapper.ContractorMapper;
 import com.mypayments.service.ContractorService;
 import com.mypayments.service.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;

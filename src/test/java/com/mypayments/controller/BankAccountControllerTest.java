@@ -3,6 +3,7 @@ package com.mypayments.controller;
 import com.google.gson.Gson;
 import com.mypayments.domain.BankAccount;
 import com.mypayments.domain.Contractor;
+import com.mypayments.domain.Disposition;
 import com.mypayments.domain.Dto.BankAccountDto;
 import com.mypayments.repository.BankAccountRepository;
 import org.junit.jupiter.api.Test;
@@ -68,7 +69,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     void shouldUpdateBankAccount() throws Exception {
         //Given
         Contractor contractor = new Contractor();
-        BankAccount bankAccount = new BankAccount(1L, "06 2490 0005 0000 4530 6049 9844", contractor);
+        BankAccount bankAccount = new BankAccount().builder().id(1L).accountNumber("06 2490 0005 0000 4530 6049 9844").contractor(contractor).build();
         bankAccountRepository.save(bankAccount);
         BankAccountDto bankAccountDto = new BankAccountDto(1L, contractor.getId(), "06 2490 0005 0000 4530 6049 9845");
         Gson gson = new Gson();
@@ -88,7 +89,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     void deleteBankAccount() throws Exception {
         //Given
         Contractor contractor = new Contractor();
-        BankAccount bankAccount = new BankAccount(1L, "06 2490 0005 0000 4530 6049 9844", contractor);
+        BankAccount bankAccount = new BankAccount().builder().id(1L).accountNumber("06 2490 0005 0000 4530 6049 9844").contractor(contractor).build();
         bankAccountRepository.save(bankAccount);
         //When & Then
         mockMvc.perform(delete("/api/bankAccounts/" + bankAccount.getId()).contentType(MediaType.APPLICATION_JSON)
