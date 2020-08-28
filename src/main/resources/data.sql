@@ -1,2 +1,4 @@
-insert into contractor_type set contractortype_id=1, contractortype_name="właściciel";
-insert into contractor_type set contractortype_id=2, contractortype_name="klient";
+INSERT INTO contractor_type (contractortype_id, contractortype_name)
+VALUES (1, 'właściciel'), (2, 'klient')
+ON CONFLICT (contractortype_id) DO UPDATE
+SET contractortype_name = excluded.contractortype_name;
