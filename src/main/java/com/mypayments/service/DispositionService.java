@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -31,8 +32,14 @@ public class DispositionService {
         }
         return dispositionList;
     }
+
     public String createDispositionFile(List<Long> idList) throws DispositionNotFoundException, InvalidDataFormatException {
-        return dispositionFileService.createDispositionFileFromList(getDispositionList(idList));
+        List<Disposition> dispositionList = getDispositionList(idList);
+        for(Disposition d: dispositionList){
+            d.setIsExecuted(true);
+            updateDisposition(d);
+        }
+        return dispositionFileService.createDispositionFileFromList(dispositionList);
     }
 
     public List<Disposition> getAllDispositions() {

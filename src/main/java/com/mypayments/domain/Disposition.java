@@ -51,7 +51,7 @@ public class Disposition {
     @OneToMany(
             targetEntity = Payment.class,
             mappedBy = "disposition",
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.REMOVE,
             fetch = FetchType.LAZY)
     @Builder.Default
     private List<Payment> payments = new ArrayList<>();

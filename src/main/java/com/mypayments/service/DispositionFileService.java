@@ -21,7 +21,6 @@ public class DispositionFileService {
 
     public String createDispositionFileFromList(List<Disposition> dispositions) throws InvalidDataFormatException {
         String result = "";
-        String quote = "\"rom\"";
         StringBuilder stringBuilder = new StringBuilder(result);
         for (Disposition d : dispositions) {
             DispositionFileLine dispositionFileLine = new DispositionFileLine().builder()

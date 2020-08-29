@@ -52,18 +52,6 @@ public class DispositionController {
         dispositionService.deleteDispositionById(dispositionId);
     }
 
-    @RequestMapping(method = RequestMethod.POST,value = "/dispositions/items3")
-
-    public String handleRequest3(@RequestParam("id") String[] itemIds) throws DispositionNotFoundException, InvalidDataFormatException {
-        List<Long> idList = new ArrayList<>();
-        for (String itemId : itemIds) {
-            idList.add(Long.parseLong(itemId));
-        }
-        String response = dispositionService.createDispositionFile(idList);
-        return response;
-
-}
-
     @RequestMapping(value = "/dispositions/download", method = RequestMethod.GET)
     public @ResponseBody void downloadFile(@RequestParam("id") String[] itemIds, HttpServletResponse resp) throws DispositionNotFoundException, InvalidDataFormatException {
         List<Long> idList = new ArrayList<>();
