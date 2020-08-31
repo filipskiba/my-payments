@@ -24,7 +24,7 @@ public class Contractor {
     @Column(name="NIP_ID")
     private String nipId;
     @Column(name = "ADRESS")
-    private String adress;
+    private String address;
     @Column(name = "CITY")
     private String city;
     @Column(name = "ZIP_CODE")

@@ -13,7 +13,7 @@ public class ContractorDto {
     private Long contractorId;
     private String contractorName;
     private String nipId;
-    private String adress;
+    private String address;
     private String city;
     private String zipCode;
     private String contractorType;

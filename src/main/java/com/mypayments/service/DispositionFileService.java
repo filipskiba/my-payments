@@ -87,7 +87,7 @@ public class DispositionFileService {
             sb.insert(currentChar, "|");
         }
         sb.append("|");
-        sb.append(contractor.getAdress());
+        sb.append(contractor.getAddress());
         sb.append("|");
         sb.append(contractor.getZipCode() + " " + contractor.getCity());
         return sb.toString();

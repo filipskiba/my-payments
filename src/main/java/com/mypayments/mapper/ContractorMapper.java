@@ -1,7 +1,6 @@
 package com.mypayments.mapper;
 
 import com.mypayments.domain.Contractor;
-import com.mypayments.domain.ContractorType;
 import com.mypayments.domain.Dto.ContractorDto;
 import com.mypayments.exception.ContractorNotFoundException;
 import com.mypayments.exception.DispositionNotFoundException;
@@ -37,7 +36,7 @@ public class ContractorMapper {
                 .id(contractorDto.getContractorId())
                 .contractorName(contractorDto.getContractorName())
                 .nipId(contractorDto.getNipId())
-                .adress(contractorDto.getAdress())
+                .address(contractorDto.getAddress())
                 .city(contractorDto.getCity())
                 .zipCode(contractorDto.getZipCode())
                 .contractorType(contractorTypeRepository.findByContractorTypeName(contractorDto.getContractorType()).orElseThrow(ContractorNotFoundException::new))
@@ -52,7 +51,7 @@ public class ContractorMapper {
                 .contractorId(contractor.getId())
                 .contractorName(contractor.getContractorName())
                 .nipId(contractor.getNipId())
-                .adress(contractor.getAdress())
+                .address(contractor.getAddress())
                 .city(contractor.getCity())
                 .zipCode(contractor.getZipCode())
                 .contractorType(contractor.getContractorType().getContractorTypeName())
@@ -68,7 +67,7 @@ public class ContractorMapper {
                 .contractorId(c.getId())
                 .contractorName(c.getContractorName())
                 .nipId(c.getNipId())
-                .adress(c.getAdress())
+                .address(c.getAddress())
                 .city(c.getCity())
                 .zipCode(c.getZipCode())
                 .contractorType(c.getContractorType().getContractorTypeName())
