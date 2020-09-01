@@ -48,7 +48,7 @@ public class Payment {
     @JoinColumn(name = "SETTLEMENT_ID")
     private Settlement settlement;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "DISPOSITION_ID")
     private Disposition disposition;
 

@@ -121,8 +121,6 @@ class SettlementControllerTest {
     @Test
     void deleteSettlement() throws Exception {
         //Given
-        Contractor contractor = new Contractor();
-        LocalDate date = LocalDate.parse("2020-01-01");
         Settlement settlement = exampleSettlement;
         settlementsRepository.save(settlement);
         //When & Then
