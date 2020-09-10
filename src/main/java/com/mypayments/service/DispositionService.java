@@ -1,6 +1,7 @@
 package com.mypayments.service;
 
 import com.mypayments.domain.Disposition;
+import com.mypayments.domain.Payment;
 import com.mypayments.exception.DispositionNotFoundException;
 import com.mypayments.exception.InvalidDataFormatException;
 import com.mypayments.repository.DispositionRepository;
@@ -79,5 +80,21 @@ public class DispositionService {
             LOGGER.error("Can not find disposition with ID: " +dispositionId);
             throw new DispositionNotFoundException();
         }
+    }
+
+    public Disposition saveDispositionByPayment(final Payment payment){
+        Disposition disposition = new Disposition().builder()
+                .dateOfExecution(payment.getDateOfTranfer())
+                .isExecuted(false)
+                .title(payment.getSettlement().getDocument())
+                .amount(payment.getAmount())
+                .owner(payment.getOwner())
+                .bankAccount(payment.getBankAccount())
+                .title(payment.getDocument())
+                .ownerBankAccount(payment.getOwnerBankAccount())
+                .contractor(payment.getContractor())
+                .build();
+        dispositionRepository.save(disposition);
+        return disposition;
     }
 }

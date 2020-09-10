@@ -49,7 +49,7 @@ public class DispositionFileService {
             stringBuilder.append("\"" + dispositionFileLine.getOwnerBankAcc() + "\"" + ",");
             stringBuilder.append("\"" + dispositionFileLine.getContractorBankAcc() + "\"" + ",");
             stringBuilder.append("\"" + dispositionFileLine.getOwnerInformations() + "\"" + ",");
-            stringBuilder.append("\"" + dispositionFileLine.getContractorInformations() + ",");
+            stringBuilder.append("\"" + dispositionFileLine.getContractorInformations() + "\""  + ",");
             stringBuilder.append(dispositionFileLine.getZeroField() + ",");
             stringBuilder.append(dispositionFileLine.getContractorBankAccountCode() + ",");
             stringBuilder.append("\"" + dispositionFileLine.getDispositionTitle() + "\"" + ",");

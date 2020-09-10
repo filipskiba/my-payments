@@ -1,10 +1,9 @@
 package com.mypayments.controller;
 
 import com.google.gson.Gson;
-import com.mypayments.domain.BankAccount;
-import com.mypayments.domain.Contractor;
-import com.mypayments.domain.Disposition;
+import com.mypayments.domain.*;
 import com.mypayments.domain.Dto.DispositionDto;
+import com.mypayments.domain.Dto.PaymentDto;
 import com.mypayments.repository.DispositionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -41,8 +40,9 @@ class DispositionControllerTest {
     @MockBean
     private DispositionRepository dispositionRepository;
 
-    private Disposition exampleDisposition = new Disposition().builder().id(1L).dateOfExecution(LocalDate.parse("2019-01-01")).isExecuted(false).title("title").amount(new BigDecimal("1")).bankAccount(new BankAccount().builder().id(1L).build()).contractor( new Contractor().builder().id(1L).build()).build();
+    private Disposition exampleDisposition = new Disposition().builder().id(1L).dateOfExecution(LocalDate.parse("2019-01-01")).isExecuted(false).title("title").amount(new BigDecimal("1")).bankAccount(new BankAccount().builder().id(1L).build()).contractor(new Contractor().builder().id(1L).build()).build();
     private DispositionDto exampleDispositionDto = new DispositionDto().builder().dispositionId(1L).dateOfExecution("2019-01-01").isExecuted(false).title("title").amount(new BigDecimal("1")).contractorId(1L).bankAccountId(1L).build();
+
 
     @Test
     void shouldGetDispositionById() throws Exception {
@@ -62,7 +62,6 @@ class DispositionControllerTest {
                 .andExpect(jsonPath("bankAccountId").value(1L));
 
 
-
     }
 
     @Test
@@ -70,7 +69,6 @@ class DispositionControllerTest {
         //Given
         List<DispositionDto> dispositionDtoList = new ArrayList<>();
         when(dispositionController.getAllDispositions()).thenReturn(dispositionDtoList);
-
         //When & Then
         mockMvc.perform(get("/api/dispositions").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200))
@@ -88,6 +86,8 @@ class DispositionControllerTest {
                 .content(param))
                 .andExpect(status().is(200));
     }
+
+
 
     @Test
     void shouldUpdateDisposition() throws Exception {
