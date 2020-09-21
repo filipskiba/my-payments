@@ -1,8 +1,10 @@
 package com.mypayments.controller;
 
 import com.mypayments.domain.Dto.DispositionDto;
+import com.mypayments.domain.Dto.PaymentDto;
 import com.mypayments.exception.*;
 import com.mypayments.mapper.DispositionMapper;
+import com.mypayments.mapper.PaymentMapper;
 import com.mypayments.service.DispositionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,9 @@ public class DispositionController {
     @Autowired
     private DispositionMapper dispositionMapper;
 
+    @Autowired
+    private PaymentMapper paymentMapper;
+
     @RequestMapping(method = RequestMethod.GET, value = "/dispositions/{dispositionId}")
     public DispositionDto getDisposition(@PathVariable("dispositionId") Long dispositionId) throws DispositionNotFoundException {
         return dispositionMapper.mapToDispositionDto(dispositionService.getDispositionById(dispositionId));
@@ -35,8 +40,8 @@ public class DispositionController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/dispositions")
-    public void createDisposition(@RequestBody DispositionDto dispositionDto) throws SettlementNotFoundException, ContractorNotFoundException, BankAccountNotFoundException, DispositionNotFoundException {
-        dispositionService.saveDisposition(dispositionMapper.mapToDisposition(dispositionDto));
+    public void createDispositionFromPayment(@RequestBody PaymentDto paymentDto) throws SettlementNotFoundException, ContractorNotFoundException, BankAccountNotFoundException, DispositionNotFoundException {
+        dispositionService.saveDispositionByPayment(paymentMapper.mapToPayment(paymentDto));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/dispositions")
