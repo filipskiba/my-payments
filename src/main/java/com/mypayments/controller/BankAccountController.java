@@ -1,6 +1,5 @@
 package com.mypayments.controller;
 
-import com.mypayments.domain.BankAccount;
 import com.mypayments.domain.Dto.BankAccountDto;
 import com.mypayments.exception.BankAccountNotFoundException;
 import com.mypayments.exception.ContractorNotFoundException;
