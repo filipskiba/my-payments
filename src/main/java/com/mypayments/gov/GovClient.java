@@ -3,6 +3,7 @@ package com.mypayments.gov;
 import com.mypayments.domain.Dto.GovSubjectDto;
 import com.mypayments.exception.InvalidDataFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -14,14 +15,15 @@ import java.time.LocalDate;
 @Component
 public class GovClient {
 
-    private final String GOV_API_ENDPOINT = "https://wl-api.mf.gov.pl/api";
+    @Value("${gov.api.endpoint}")
+    private String govEndpoint;
 
     @Autowired
     private RestTemplate restTemplate;
 
 
     private URI getGovUrl(String nipId, String bankAccount, LocalDate date) {
-        URI url = UriComponentsBuilder.fromHttpUrl(GOV_API_ENDPOINT)
+        URI url = UriComponentsBuilder.fromHttpUrl(govEndpoint)
                 .path("/check/nip/" + nipId + "/bank-account/" + bankAccount)
                 .queryParam("date", date.toString())
                 .build().encode().toUri();

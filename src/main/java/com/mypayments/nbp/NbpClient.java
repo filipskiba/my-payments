@@ -2,6 +2,7 @@ package com.mypayments.nbp;
 
 import com.mypayments.domain.Dto.ExchangeratesDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -16,13 +17,15 @@ import static java.util.Optional.ofNullable;
 
 @Component
 public class NbpClient {
-    private final String NBP_API_ENDPOINT = "http://api.nbp.pl/api/exchangerates/tables/A";
+
+    @Value("${nbp.api.endpoint}")
+    private String nbpEndpoint;
 
     @Autowired
     private RestTemplate restTemplate;
 
     private URI getNbpUrl() {
-        URI url = UriComponentsBuilder.fromHttpUrl(NBP_API_ENDPOINT)
+        URI url = UriComponentsBuilder.fromHttpUrl(nbpEndpoint)
                 .build().encode().toUri();
         return url;
     }
