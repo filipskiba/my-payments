@@ -42,10 +42,6 @@ public class DispositionController {
         return dispositionMapper.mapToDispositionDtoList(dispositionService.getAllDispositions());
     }
 
-  /*  @RequestMapping(method = RequestMethod.POST, value = "/dispositions")
-    public void createDispositionFromPayment(@RequestBody PaymentDto paymentDto) throws SettlementNotFoundException, ContractorNotFoundException, BankAccountNotFoundException, DispositionNotFoundException {
-        dispositionService.saveDispositionByPayment(paymentMapper.mapToPayment(paymentDto));
-    }*/
 
     @RequestMapping(method = RequestMethod.PUT, value = "/dispositions")
     public DispositionDto updateDisposition(@RequestBody DispositionDto dispositionDto) throws ContractorNotFoundException, SettlementNotFoundException, BankAccountNotFoundException, DispositionNotFoundException {

@@ -3,6 +3,7 @@ package com.mypayments.controller;
 import com.google.gson.Gson;
 import com.mypayments.domain.*;
 import com.mypayments.domain.Dto.DispositionDto;
+import com.mypayments.domain.Dto.DispositionsPackageDto;
 import com.mypayments.domain.Dto.PaymentDto;
 import com.mypayments.repository.DispositionRepository;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -40,9 +42,33 @@ class DispositionControllerTest {
     @MockBean
     private DispositionRepository dispositionRepository;
 
-    private Disposition exampleDisposition = new Disposition().builder().id(1L).dateOfExecution(LocalDate.parse("2019-01-01")).isExecuted(false).title("title").amount(new BigDecimal("1")).bankAccount(new BankAccount().builder().id(1L).build()).contractor(new Contractor().builder().id(1L).build()).build();
-    private DispositionDto exampleDispositionDto = new DispositionDto().builder().dispositionId(1L).dateOfExecution("2019-01-01").isExecuted(false).title("title").amount(new BigDecimal("1")).contractorId(1L).contractorBankAccountNumber("1111").build();
+    private Disposition exampleDisposition = new Disposition().builder()
+            .id(1L)
+            .dateOfExecution(LocalDate.parse("2019-01-01"))
+            .isExecuted(false).title("title")
+            .amount(new BigDecimal("1"))
+            .bankAccount(new BankAccount().builder()
+                    .id(1L)
+                    .accountNumber("1111")
+                    .build())
+            .contractor(new Contractor().builder()
+                    .id(1L).build())
+            .settlement(new Settlement().builder()
+                    .id(1l).build())
+            .build();
+    private DispositionDto exampleDispositionDto = new DispositionDto().builder()
+            .dispositionId(1L)
+            .dateOfExecution("2019-01-01")
+            .isExecuted(false).title("title")
+            .amount(new BigDecimal("1"))
+            .contractorId(1L)
+            .contractorBankAccountNumber("1111")
+            .settlementDtoId(1L)
+            .build();
 
+    private DispositionsPackageDto dispositionsPackageDto = new DispositionsPackageDto().builder()
+            .dateOfExecution("2020-01-01")
+            .idsList(Arrays.asList(1L)).build();
 
     @Test
     void shouldGetDispositionById() throws Exception {
@@ -59,7 +85,7 @@ class DispositionControllerTest {
                 .andExpect(jsonPath("title").value("title"))
                 .andExpect(jsonPath("amount").value(new BigDecimal("1")))
                 .andExpect(jsonPath("contractorId").value(1L))
-                .andExpect(jsonPath("bankAccountId").value(1L));
+                .andExpect(jsonPath("contractorBankAccountNumber").value("1111"));
 
 
     }
@@ -76,12 +102,12 @@ class DispositionControllerTest {
     }
 
     @Test
-    void createDisposition() throws Exception {
+    void createDispositionsFromIdesList() throws Exception {
         //Given
         Gson gson = new Gson();
-        String param = gson.toJson(exampleDispositionDto);
+        String param = gson.toJson(dispositionsPackageDto);
         //When & Then
-        mockMvc.perform(post("/api/dispositions").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/dispositions/list").contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(param))
                 .andExpect(status().is(200));
@@ -106,7 +132,7 @@ class DispositionControllerTest {
                 .andExpect(jsonPath("title").value("title"))
                 .andExpect(jsonPath("amount").value(new BigDecimal("1")))
                 .andExpect(jsonPath("contractorId").value(1L))
-                .andExpect(jsonPath("bankAccountId").value(1L));
+                .andExpect(jsonPath("contractorBankAccountNumber").value("1111"));
 
     }
 
