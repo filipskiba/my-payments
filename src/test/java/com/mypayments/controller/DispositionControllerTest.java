@@ -41,7 +41,7 @@ class DispositionControllerTest {
     private DispositionRepository dispositionRepository;
 
     private Disposition exampleDisposition = new Disposition().builder().id(1L).dateOfExecution(LocalDate.parse("2019-01-01")).isExecuted(false).title("title").amount(new BigDecimal("1")).bankAccount(new BankAccount().builder().id(1L).build()).contractor(new Contractor().builder().id(1L).build()).build();
-    private DispositionDto exampleDispositionDto = new DispositionDto().builder().dispositionId(1L).dateOfExecution("2019-01-01").isExecuted(false).title("title").amount(new BigDecimal("1")).contractorId(1L).bankAccountId(1L).build();
+    private DispositionDto exampleDispositionDto = new DispositionDto().builder().dispositionId(1L).dateOfExecution("2019-01-01").isExecuted(false).title("title").amount(new BigDecimal("1")).contractorId(1L).contractorBankAccountNumber("1111").build();
 
 
     @Test
