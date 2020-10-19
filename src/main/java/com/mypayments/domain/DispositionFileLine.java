@@ -12,6 +12,7 @@ public class DispositionFileLine {
     private String orderCode;
     private String dateOfExecution;
     private String amount;
+    private String vatAmount;
     private String ownerBankAccountCode;
     private String zeroField;
     private String ownerBankAcc;
@@ -23,5 +24,7 @@ public class DispositionFileLine {
     private String emptyField;
     private String transferCode;
     private String splitPayment;
+    private String nipId;
+    private String document;
 
 }

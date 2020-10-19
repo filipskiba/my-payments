@@ -30,10 +30,10 @@ public class PaymentController {
         return paymentMapper.mapToPaymentsDtoList(paymentService.getAllPayments());
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/payments")
+/*    @RequestMapping(method = RequestMethod.POST, value = "/payments")
     public void createPayment(@RequestBody PaymentDto paymentDto) throws SettlementNotFoundException, ContractorNotFoundException, DispositionNotFoundException, BankAccountNotFoundException {
         paymentService.savePayment(paymentMapper.mapToPayment(paymentDto));
-    }
+    }*/
 
     @RequestMapping(method = RequestMethod.PUT, value = "/payments")
     public PaymentDto updatePayment(@RequestBody PaymentDto paymentDto) throws ContractorNotFoundException, SettlementNotFoundException, PaymentNotFoundException, DispositionNotFoundException, BankAccountNotFoundException {

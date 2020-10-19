@@ -23,14 +23,14 @@ public class Contractor {
     private String contractorName;
     @Column(name="NIP_ID")
     private String nipId;
-    @Column(name = "ADRESS")
+    @Column(name = "ADDRESS")
     private String address;
     @Column(name = "CITY")
     private String city;
     @Column(name = "ZIP_CODE")
     private String zipCode;
     @ManyToOne
-    @JoinColumn(name = "CONTRACTORTYPE_ID")
+    @JoinColumn(name = "CONTRACTOR_TYPE_ID")
     private ContractorType contractorType;
 
 

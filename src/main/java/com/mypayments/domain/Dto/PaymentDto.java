@@ -25,4 +25,5 @@ public class PaymentDto {
     private String ownerBankAccountNumber;
     private String ownerName;
     private String document;
+    private BigDecimal vatAmount;
 }

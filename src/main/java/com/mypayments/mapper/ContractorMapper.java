@@ -2,6 +2,7 @@ package com.mypayments.mapper;
 
 import com.mypayments.domain.Contractor;
 import com.mypayments.domain.Dto.ContractorDto;
+import com.mypayments.exception.BankAccountNotFoundException;
 import com.mypayments.exception.ContractorNotFoundException;
 import com.mypayments.exception.DispositionNotFoundException;
 import com.mypayments.exception.SettlementNotFoundException;
@@ -31,7 +32,7 @@ public class ContractorMapper {
     private ContractorTypeRepository contractorTypeRepository;
 
 
-    public Contractor mapToContractor(final ContractorDto contractorDto) throws ContractorNotFoundException, SettlementNotFoundException, DispositionNotFoundException {
+    public Contractor mapToContractor(final ContractorDto contractorDto) throws ContractorNotFoundException, SettlementNotFoundException, DispositionNotFoundException, BankAccountNotFoundException {
         return new Contractor().builder()
                 .id(contractorDto.getContractorId())
                 .contractorName(contractorDto.getContractorName())

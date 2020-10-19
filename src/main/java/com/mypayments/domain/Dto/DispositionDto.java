@@ -1,5 +1,6 @@
 package com.mypayments.domain.Dto;
 
+import com.mypayments.domain.Settlement;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -17,10 +18,12 @@ public class DispositionDto {
     private Boolean isExecuted;
     private String title;
     private BigDecimal amount;
+    private BigDecimal vatAmount;
     private Long contractorId;
     private String contractorName;
-    private Long bankAccountId;
+    private String contractorBankAccountNumber;
     private List<PaymentDto> paymentDtoList;
+    private Long settlementDtoId;
     private Long ownerId;
     private String ownerBankAccountNumber;
     private String ownerName;

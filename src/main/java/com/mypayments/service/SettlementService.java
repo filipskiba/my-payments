@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -22,7 +23,7 @@ public class SettlementService {
     private static final String MESSAGE = "Can not find settlement with ID: ";
 
     @Autowired
-    SettlementsRepository settlementsRepository;
+    private SettlementsRepository settlementsRepository;
 
     public List<Settlement> getAllSetlements() {
         return settlementsRepository.findAll();
@@ -41,6 +42,13 @@ public class SettlementService {
     public Settlement saveSettlement(final Settlement settlement) {
         LOGGER.info("Successfully saved settlement");
         return settlementsRepository.save(settlement);
+    }
+    public List<Settlement> getSettlementListById(List<Long> idList) throws SettlementNotFoundException {
+        List<Settlement> settlementList = new ArrayList<>();
+        for(Long id: idList){
+            settlementList.add(settlementsRepository.findById(id).orElseThrow(SettlementNotFoundException::new));
+        }
+        return settlementList;
     }
 
     public Settlement updateSettlement(final Settlement settlement) throws SettlementNotFoundException {

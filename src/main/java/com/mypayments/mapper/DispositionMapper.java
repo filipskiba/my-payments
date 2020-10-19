@@ -8,6 +8,7 @@ import com.mypayments.exception.DispositionNotFoundException;
 import com.mypayments.exception.SettlementNotFoundException;
 import com.mypayments.repository.BankAccountRepository;
 import com.mypayments.repository.ContractorRepository;
+import com.mypayments.repository.SettlementsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +26,8 @@ public class DispositionMapper {
     private BankAccountRepository bankAccountRepository;
     @Autowired
     private PaymentMapper paymentMapper;
+    @Autowired
+    private SettlementsRepository settlementsRepository;
 
     public Disposition mapToDisposition(final DispositionDto dispositionDto) throws ContractorNotFoundException, BankAccountNotFoundException, SettlementNotFoundException, DispositionNotFoundException {
         return new Disposition().builder()
@@ -34,10 +37,12 @@ public class DispositionMapper {
                 .title(dispositionDto.getTitle())
                 .amount(dispositionDto.getAmount())
                 .contractor(contractorRepository.findById(dispositionDto.getContractorId()).orElseThrow(ContractorNotFoundException::new))
-                .bankAccount(bankAccountRepository.findById(dispositionDto.getBankAccountId()).orElseThrow(BankAccountNotFoundException::new))
+                .bankAccount(bankAccountRepository.findBankAccountByAccountNumber(dispositionDto.getContractorBankAccountNumber()).orElseThrow(BankAccountNotFoundException::new))
                 .payments(paymentMapper.mapToPaymentsList(dispositionDto.getPaymentDtoList()))
+                .settlement(settlementsRepository.findById(dispositionDto.getSettlementDtoId()).orElseThrow(SettlementNotFoundException::new))
                 .owner(contractorRepository.findById(dispositionDto.getOwnerId()).orElseThrow(ContractorNotFoundException::new))
                 .ownerBankAccount(bankAccountRepository.findBankAccountByAccountNumber(dispositionDto.getOwnerBankAccountNumber()).orElseThrow(BankAccountNotFoundException::new))
+                .vatAmount(dispositionDto.getVatAmount())
                 .build();
 
     }
@@ -54,7 +59,9 @@ public class DispositionMapper {
                 .amount(disposition.getAmount())
                 .contractorId(disposition.getContractor().getId())
                 .contractorName(disposition.getContractor().getContractorName())
-                .bankAccountId(disposition.getBankAccount().getId())
+                .contractorBankAccountNumber(disposition.getBankAccount().getAccountNumber())
+                .settlementDtoId(disposition.getSettlement().getId())
+                .vatAmount(disposition.getVatAmount())
                 .paymentDtoList(paymentMapper.mapToPaymentsDtoList(disposition.getPayments()))
                 .build();
     }
@@ -71,9 +78,11 @@ public class DispositionMapper {
                             .title(s.getTitle())
                             .amount(s.getAmount())
                             .contractor(contractorRepository.findById(s.getContractorId()).orElseThrow(ContractorNotFoundException::new))
-                            .bankAccount(bankAccountRepository.findById(s.getBankAccountId()).orElseThrow(BankAccountNotFoundException::new))
+                            .bankAccount(bankAccountRepository.findBankAccountByAccountNumber(s.getContractorBankAccountNumber()).orElseThrow(BankAccountNotFoundException::new))
                             .payments(paymentMapper.mapToPaymentsList(s.getPaymentDtoList()))
+                            .settlement(settlementsRepository.findById(s.getSettlementDtoId()).orElseThrow(SettlementNotFoundException::new))
                             .owner(contractorRepository.findById(s.getOwnerId()).get())
+                            .vatAmount(s.getVatAmount())
                             .ownerBankAccount(bankAccountRepository.findBankAccountByAccountNumber(s.getOwnerBankAccountNumber()).get())
                             .build()
                     );
@@ -98,8 +107,10 @@ public class DispositionMapper {
                         .amount(s.getAmount())
                         .contractorId(s.getContractor().getId())
                         .contractorName(s.getContractor().getContractorName())
-                        .bankAccountId(s.getBankAccount().getId())
+                        .contractorBankAccountNumber(s.getBankAccount().getAccountNumber())
                         .paymentDtoList(paymentMapper.mapToPaymentsDtoList(s.getPayments()))
+                        .settlementDtoId(s.getSettlement().getId())
+                        .vatAmount(s.getVatAmount())
                         .build()).collect(Collectors.toList());
     }
 

@@ -36,13 +36,13 @@ public class ContractorController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/contractors")
-    public void createContractor(@RequestBody ContractorDto contractorDto) throws SettlementNotFoundException, ContractorNotFoundException, DispositionNotFoundException {
+    public void createContractor(@RequestBody ContractorDto contractorDto) throws SettlementNotFoundException, ContractorNotFoundException, DispositionNotFoundException, BankAccountNotFoundException {
         System.out.println(contractorDto);
         contractorService.saveContractor(contractorMapper.mapToContractor(contractorDto));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/contractors")
-    public ContractorDto updateContractor(@RequestBody ContractorDto contractorDto) throws SettlementNotFoundException, ContractorNotFoundException, DispositionNotFoundException {
+    public ContractorDto updateContractor(@RequestBody ContractorDto contractorDto) throws SettlementNotFoundException, ContractorNotFoundException, DispositionNotFoundException, BankAccountNotFoundException {
         return contractorMapper.mapToContractorDto(contractorService.updateContractor(contractorMapper.mapToContractor(contractorDto)));
     }
 

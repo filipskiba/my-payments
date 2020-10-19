@@ -45,6 +45,7 @@ public class PaymentMapper {
                 .bankAccount(bankAccountRepository.findBankAccountByAccountNumber(paymentDto.getBankAccountNumber()).orElseThrow(BankAccountNotFoundException::new))
                 .owner(contractorRepository.findById(paymentDto.getOwnerId()).orElseThrow(ContractorNotFoundException::new))
                 .ownerBankAccount(bankAccountRepository.findBankAccountByAccountNumber(paymentDto.getOwnerBankAccountNumber()).orElseThrow(BankAccountNotFoundException::new))
+                .vatAmount(paymentDto.getVatAmount())
               //  .disposition(dispositionRepository.findById(paymentDto.getDispositionId()).orElseThrow(DispositionNotFoundException::new))
                 .build();
     }
@@ -63,6 +64,7 @@ public class PaymentMapper {
                 .bankAccountNumber(payment.getBankAccount().getAccountNumber())
                 .bankAccountNumber(payment.getBankAccount().getAccountNumber())
                 .ownerBankAccountNumber(payment.getOwnerBankAccount().getAccountNumber())
+                .vatAmount(payment.getVatAmount())
                 .build();
     }
 
@@ -82,6 +84,7 @@ public class PaymentMapper {
                             .bankAccount(bankAccountRepository.findBankAccountByAccountNumber(p.getBankAccountNumber()).get())
                             .bankAccount(bankAccountRepository.findBankAccountByAccountNumber(p.getBankAccountNumber()).get())
                             .ownerBankAccount(bankAccountRepository.findBankAccountByAccountNumber(p.getOwnerBankAccountNumber()).get())
+                            .vatAmount(p.getVatAmount())
                             .build()
                     );
                 } else {
@@ -116,6 +119,7 @@ public class PaymentMapper {
                         .settlementId(p.getSettlement().getId())
                         .dispositionId(p.getDisposition().getId())
                         .bankAccountNumber(p.getBankAccount().getAccountNumber())
+                        .vatAmount(p.getVatAmount())
                         .build())
                         .collect(Collectors.toList());
     }

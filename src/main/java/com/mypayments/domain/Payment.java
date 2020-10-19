@@ -40,6 +40,9 @@ public class Payment {
     @Column(name = "AMOUNT")
     private BigDecimal amount;
 
+    @Column(name = "VAT_AMOUNT")
+    private BigDecimal vatAmount;
+
     @ManyToOne
     @JoinColumn(name = "BANKACCOUNT_ID")
     private BankAccount bankAccount;

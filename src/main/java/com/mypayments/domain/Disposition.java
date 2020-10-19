@@ -26,11 +26,14 @@ public class Disposition {
     @Column
     private Boolean isExecuted;
 
-    @Column
+    @Column(name = "TITLE")
     private String title;
 
-    @Column
+    @Column(name = "AMOUNT")
     private BigDecimal amount;
+
+    @Column(name = "VAT_AMOUNT")
+    private BigDecimal vatAmount;
 
     @ManyToOne
     @JoinColumn(name = "OWNER_ID")
@@ -55,6 +58,13 @@ public class Disposition {
             fetch = FetchType.LAZY)
     @Builder.Default
     private List<Payment> payments = new ArrayList<>();
+
+
+    @ManyToOne
+    @JoinColumn(name = "SETTLEMENT_ID")
+    private Settlement settlement;
+
+
 
 
 }

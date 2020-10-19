@@ -39,8 +39,6 @@ public class PaymentService {
 
     public Payment savePayment(final Payment payment) {
         LOGGER.info("Successfully saved payment and disposition");
-        Disposition disposition = dispositionService.saveDispositionByPayment(payment);
-        payment.setDisposition(disposition);
         return paymentRepository.save(payment);
     }
 
