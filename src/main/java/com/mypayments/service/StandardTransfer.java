@@ -25,7 +25,7 @@ public class StandardTransfer extends Transfer {
                 .contractorInformations(reformatContractorInformation(disposition.getContractor()))
                 .zeroField("0")
                 .contractorBankAccountCode(getBankAccountCode(disposition.getBankAccount()))
-                .dispositionTitle(reformatTitle(disposition.getTitle()))
+                .dispositionTitle(reformatTitle(disposition.getSettlement().getDocument()))
                 .emptyField("\"" + "\"")
                 .transferCode("\"" + disposition.getSettlement().getSettlementType().getSettlementTypeCode() + "\"")
                 .splitPayment("\"" + disposition.getSettlement().getSettlementType().getSplitPayment() + "\"")
@@ -45,8 +45,7 @@ public class StandardTransfer extends Transfer {
         stringBuilder.append("\"" + dispositionFileLine.getDispositionTitle() + "\"" + ",");
         stringBuilder.append(dispositionFileLine.getEmptyField() + ",");
         stringBuilder.append(dispositionFileLine.getEmptyField() + ",");
-        stringBuilder.append(dispositionFileLine.getTransferCode() + ",");
-        stringBuilder.append(dispositionFileLine.getSplitPayment());
+        stringBuilder.append(dispositionFileLine.getTransferCode());
 
         return stringBuilder.toString();
     }

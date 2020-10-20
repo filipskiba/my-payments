@@ -47,11 +47,10 @@ public class SplitPaymentTransfer extends Transfer {
         stringBuilder.append("/IDC/"+dispositionFileLine.getNipId());
         stringBuilder.append("/INV/"+dispositionFileLine.getDocument());
         stringBuilder.append("/TXT/");
-        stringBuilder.append("\"" + dispositionFileLine.getDispositionTitle() + "\"" + ",");
+        stringBuilder.append( dispositionFileLine.getDispositionTitle() + "\"" + ",");
         stringBuilder.append(dispositionFileLine.getEmptyField() + ",");
         stringBuilder.append(dispositionFileLine.getEmptyField() + ",");
-        stringBuilder.append(dispositionFileLine.getTransferCode() + ",");
-        stringBuilder.append(dispositionFileLine.getSplitPayment());
+        stringBuilder.append(dispositionFileLine.getTransferCode());
 
         return stringBuilder.toString();
     }
