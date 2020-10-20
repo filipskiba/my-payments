@@ -50,7 +50,7 @@ public class SplitPaymentTransfer extends Transfer {
         stringBuilder.append("\"" + dispositionFileLine.getDispositionTitle() + "\"" + ",");
         stringBuilder.append(dispositionFileLine.getEmptyField() + ",");
         stringBuilder.append(dispositionFileLine.getTransferCode() + ",");
-        stringBuilder.append("\"" + dispositionFileLine.getSplitPayment() + "\"" + ",");
+        stringBuilder.append("\"" + dispositionFileLine.getSplitPayment() + "\"" );
 
         return stringBuilder.toString();
     }
