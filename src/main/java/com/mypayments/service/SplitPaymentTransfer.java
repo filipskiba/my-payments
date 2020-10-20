@@ -25,7 +25,7 @@ public class SplitPaymentTransfer extends Transfer {
                 .contractorBankAccountCode(getBankAccountCode(disposition.getSettlement().getBankAccount()))
                 .vatAmount(String.valueOf(disposition.getSettlement().getVatAmount()))
                 .nipId(getNipId(disposition.getSettlement().getContractor()))
-                .dispositionTitle(reformatTitleTo33(disposition.getSettlement().getTitle()))
+                .dispositionTitle(reformatTitleTo33(disposition.getSettlement().getDocument()))
                 .document(disposition.getSettlement().getDocument())
                 .emptyField("\"" + "\"")
                 .transferCode("\"" + disposition.getSettlement().getSettlementType().getSettlementTypeCode() + "\"")
